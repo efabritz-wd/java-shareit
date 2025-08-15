@@ -1,10 +1,6 @@
-package ru.practicum.shareit.item.dto;
+package ru.practicum.shareit.user.dto;
 
-/**
- * TODO Sprint add-controllers.
- */
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,14 +10,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class ItemDto {
+public class UserDto {
     private Long id;
     @NotBlank
     private String name;
     @NotBlank
-    private String description;
-    @NotNull
-    private Boolean available;
-    private Long requestId;
+    private String email;
 }
-

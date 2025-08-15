@@ -1,0 +1,30 @@
+package ru.practicum.shareit.item.mapper;
+
+import org.springframework.stereotype.Component;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.dto.ItemDto;
+
+@Component
+public class ItemMapper {
+
+    public ItemDto toItemDto(Item item) {
+        return new ItemDto()
+                .toBuilder()
+                .id(item.getItemId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .available(item.getAvailable())
+                .requestId(item.getRequest() != null ? item.getRequest().getId() : null)
+                .build();
+    }
+
+    public Item fromDtoToItem(ItemDto itemDto) {
+        return new Item()
+                .toBuilder()
+                .itemId(itemDto.getId())
+                .name(itemDto.getName())
+                .description(itemDto.getDescription())
+                .available(itemDto.getAvailable())
+                .build();
+    }
+}
