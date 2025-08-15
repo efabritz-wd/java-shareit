@@ -12,6 +12,7 @@ public class BookingMapper {
     private LocalDateTime leasingStart;
     private LocalDateTime leasingEnd;
     private BookingStatus status;
+
     public static BookingDto toItemDto(Booking booking) {
         return new BookingDto(
                 booking.getLeasingStart(),
