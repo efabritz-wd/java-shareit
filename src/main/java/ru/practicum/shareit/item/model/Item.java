@@ -20,7 +20,7 @@ import ru.practicum.shareit.user.User;
 @Builder(toBuilder = true)
 public class Item {
     @NotNull
-    private Long itemId;
+    private Long id;
     @NotBlank
     private String name;
     @NotBlank

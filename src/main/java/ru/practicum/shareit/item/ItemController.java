@@ -33,7 +33,7 @@ public class ItemController {
                                @PathVariable("itemId") Long itemId) {
         User owner = userService.getUserById(userId);
         Item item = itemService.getItemById(itemId);
-        if (!owner.getUserId().equals(item.getOwner().getUserId())) {
+        if (!owner.getId().equals(item.getOwner().getId())) {
             throw new RuntimeException("User id does not correspond owner id");
         }
         return itemMapper.toItemDto(item);
@@ -84,7 +84,7 @@ public class ItemController {
         User user = userService.getUserById(userId);
         Item item = itemService.getItemById(itemId);
         Item itemBuilt = itemMapper.fromDtoToItem(itemDto);
-        itemBuilt.setItemId(item.getItemId());
+        itemBuilt.setId(item.getId());
         itemBuilt.setOwner(user);
         Item itemUpdated = itemService.updateItem(itemBuilt);
 

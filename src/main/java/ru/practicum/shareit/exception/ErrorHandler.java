@@ -13,7 +13,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse validationExceptionUser(final ValidationException e) {
         return new ErrorResponse(
-                "Ошибка валидации пользователя",
+                "Error validating user",
                 e.getMessage()
         );
     }
@@ -22,7 +22,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse notFoundException(final NotFoundException e) {
         return new ErrorResponse(
-                "Пользователь не найден",
+                "User not found",
                 e.getMessage()
         );
     }
@@ -31,8 +31,17 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse commonException(final ConditionsNotMetException e) {
         return new ErrorResponse(
-                "Ошибка",
+                "Error",
                 e.getMessage()
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleAllExceptions(final Exception e) {
+        return new ErrorResponse(
+                "Error",
+                "Error unknown"
         );
     }
 
