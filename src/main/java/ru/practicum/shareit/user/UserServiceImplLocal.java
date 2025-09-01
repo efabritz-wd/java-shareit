@@ -1,5 +1,5 @@
 package ru.practicum.shareit.user;
-
+/*
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.ConditionsNotMetException;
@@ -8,7 +8,7 @@ import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.List;
 import java.util.Optional;
-/*
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImplLocal implements UserService {
