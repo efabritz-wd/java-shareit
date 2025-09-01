@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
-public class ItemLocalStorage implements ItemRepository {
+public class ItemLocalStorageLocal implements ItemRepositoryLocal {
     private Map<Long, Item> itemsMap = new HashMap<>();
 
     public Item getItemById(Long itemId) {
@@ -47,7 +47,6 @@ public class ItemLocalStorage implements ItemRepository {
         itemsMap.put(existingItem.getId(), existingItem);
         return existingItem;
     }
-
 
     public void deleteItem(Long itemId) {
         itemsMap.remove(itemId);

@@ -9,13 +9,12 @@ import java.util.Map;
 
 @Repository
 @RequiredArgsConstructor
-public class UserLocalStorage implements UserRepository {
+public class UserLocalStorageLocal implements UserRepositoryLocal {
     private Map<Long, User> usersMap = new HashMap<>();
 
     public User getUserById(Long userId) {
         return usersMap.get(userId);
     }
-
 
     public List<User> getAllUsers() {
         return usersMap.values().stream().toList();
