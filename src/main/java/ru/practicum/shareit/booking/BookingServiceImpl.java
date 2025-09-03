@@ -35,11 +35,6 @@ public class BookingServiceImpl implements BookingService {
             throw new ValidationException("Booking. End date should be after start date");
         }
 
-        // Comment past booking test error
-       /*if (bookingRequestDto.getStart().isBefore(LocalDateTime.now())) {
-             throw new ValidationException("Booking start can not be in the past");
-        }*/
-
         if (itemDto.getOwnerId().equals(userDto.getId())) {
             throw new ValidationException("Error owner - booker");
         }
