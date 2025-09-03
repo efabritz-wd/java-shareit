@@ -2,7 +2,6 @@ package ru.practicum.shareit.user;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.practicum.shareit.item.model.Item;
 
 
 @Entity
@@ -22,19 +21,11 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    /*@Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Item)) return false;
-        return id != null && id.equals(((Item) o).getId());
-    }*/
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true; // Identitätsprüfung
-        if (!(obj instanceof User)) return false; // Typprüfung
-        User other = (User) obj;
-        // Hier sollten Sie die relevanten Attribute vergleichen
-        return this.id == other.id; // Beispiel: Vergleich der ID
+        if (!(o instanceof User)) return false;
+        return id != null && id.equals(((User) o).getId());
     }
 
 

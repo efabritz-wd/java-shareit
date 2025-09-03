@@ -37,20 +37,11 @@ public class Booking {
     @Column(nullable = false)
     private BookingStatus status;
 
-   /* @Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Item)) return false;
-        return id != null && id.equals(((Item) o).getId());
-    }*/
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true; // Identitätsprüfung
-        if (!(obj instanceof Booking)) return false; // Typprüfung
-        Booking other = (Booking) obj;
-        // Hier sollten Sie die relevanten Attribute vergleichen
-        return this.id == other.id; // Beispiel: Vergleich der ID
+        if (!(o instanceof Booking)) return false;
+        return id != null && id.equals(((Booking) o).getId());
     }
 
     @Override
