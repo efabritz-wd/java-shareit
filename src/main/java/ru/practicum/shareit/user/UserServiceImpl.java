@@ -1,81 +1,58 @@
 package ru.practicum.shareit.user;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.exception.ConditionsNotMetException;
 import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.mapper.UserMapper;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     @Override
-    public User getUserById(Long id) {
-        if (userRepository.getUserById(id) == null) {
+    @Transactional
+    public UserDto getUserById(Long id) {
+        if (userRepository.findById(id).isEmpty()) {
             throw new NotFoundException("User not found");
         }
-        return userRepository.getUserById(id);
+        User user = userRepository.findById(id).get();
+        return userMapper.toUserDto(user);
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.getAllUsers();
+    @Transactional
+    public List<UserDto> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return userMapper.toUserDto(users);
     }
 
     @Override
-    public User createUser(User user) {
-        if (user == null) {
-            throw new NotFoundException("User not found");
-        }
-
-        if (checkDoubleEmail(user)) {
-            throw new ConditionsNotMetException("User with this email exists already");
-        }
-        return userRepository.createUser(user);
+    public UserDto createUser(UserDto userDto) {
+        User user = userMapper.fromDtoToUser(userDto);
+        return userMapper.toUserDto(userRepository.save(user));
     }
 
     @Override
-    public User updateUser(User user) {
-        if (user == null) {
-            throw new NotFoundException("User not found");
-        }
+    public UserDto updateUser(UserDto userDto, Long userId) {
+        User userToUpdate = userMapper.fromDtoToUser(getUserById(userId));
+        User userWithUpdateParams = userMapper.fromDtoToUser(userDto);
 
-        if (userRepository.getUserById(user.getId()) == null) {
-            throw new NotFoundException("User not found in a map");
-        }
+        userToUpdate.setName(Objects.requireNonNullElse(userWithUpdateParams.getName(), userToUpdate.getName()));
+        userToUpdate.setEmail(Objects.requireNonNullElse(userWithUpdateParams.getEmail(), userToUpdate.getEmail()));
 
-        if (checkDoubleEmail(user)) {
-            throw new ConditionsNotMetException("User with this email exists already");
-        }
-        return userRepository.updateUser(user);
+        return userMapper.toUserDto(userRepository.save(userToUpdate));
     }
 
     @Override
     public void deleteUser(Long userId) {
-        User user = userRepository.getUserById(userId);
-
-        if (user == null) {
-            throw new NotFoundException("User not found");
-        }
-
-        if (userRepository.getUserById(user.getId()) == null) {
-            throw new NotFoundException("User not found in a map");
-        }
-
-        userRepository.deleteUser(userId);
-    }
-
-    private boolean checkDoubleEmail(User user) {
-        String email = user.getEmail();
-        Long userId = user.getId();
-        List<User> usersList = userRepository.getAllUsers();
-        Optional<User> userExists = usersList.stream()
-                .filter(userCheck -> !userCheck.getId().equals(userId) && userCheck.getEmail().equals(email))
-                .findFirst();
-        return userExists.isPresent();
+        userRepository.deleteById(userId);
     }
 }
