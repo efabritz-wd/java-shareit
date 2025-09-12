@@ -52,7 +52,8 @@ public class BookingMapper {
                 booking.getItem().getOwner().getId(),
                 null,
                 null,
-                new ArrayList<>());
+                new ArrayList<>(),
+                null);
 
         UserDto userDto = new UserDto(booking.getBooker().getId(),
                 booking.getBooker().getName(),

@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item.dto;
+package ru.practicum.shareit.request.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -6,32 +6,26 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.lang.Nullable;
+import ru.practicum.shareit.item.model.Item;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder(toBuilder = true)
-public class ItemDto {
+public class RequestDto {
     private Long id;
-    @NotBlank
-    private String name;
+
     @NotBlank
     private String description;
 
+    @NotBlank
+    private LocalDateTime created;
+
     @NotNull
-    private Boolean available;
+    private Long userId;
 
-    Long ownerId;
-
-    BookerDto lastBooking;
-    BookerDto nextBooking;
-
-    List<CommentDto> comments;
-
-    @Nullable
-    Long requestId;
+    List<Item> items;
 }
-

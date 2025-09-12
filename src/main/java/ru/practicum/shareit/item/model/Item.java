@@ -27,6 +27,9 @@ public class Item {
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 
+    @Column(name = "request_id")
+    Long requestId;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
