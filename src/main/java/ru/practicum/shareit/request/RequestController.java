@@ -49,4 +49,3 @@ public class RequestController {
         return requests.stream().map(request -> requestMapper.toRequestDto(request)).toList();
     }
 }
-
