@@ -52,7 +52,7 @@
 						</systemPropertyVariables>
 					</configuration>
 				</plugin>
-				<!-- <plugin>
+				 <plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
 					<version>3.1.2</version>
@@ -77,7 +77,7 @@
 							<version>10.3</version>
 						</dependency>
 					</dependencies>
-				</plugin> -->
+				</plugin>
 				<plugin>
 					<groupId>com.github.spotbugs</groupId>
 					<artifactId>spotbugs-maven-plugin</artifactId>
@@ -165,7 +165,7 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	<!--<profiles>
+	<profiles>
 		<profile>
 			<id>check</id>
 			<build>
@@ -189,5 +189,5 @@
 				</plugins>
 			</reporting>
 		</profile>
-	</profiles> -->
+	</profiles>
 </project>
