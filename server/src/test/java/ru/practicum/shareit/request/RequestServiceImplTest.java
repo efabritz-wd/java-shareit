@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Transactional
 @SpringBootTest(
@@ -43,6 +45,7 @@ public class RequestServiceImplTest {
     private UserDto user;
     private ItemDto item;
     private Request request;
+    private Request requestCreated;
 
     @BeforeEach
     void setUp() {
@@ -69,7 +72,39 @@ public class RequestServiceImplTest {
         request.setUserId(user.getId());
         Item itemToAdd = itemMapper.fromDtoToItem(item, owner);
         request.setItems(List.of(itemToAdd));
-        requestService.createRequest(request);
+        requestCreated = requestService.createRequest(request);
+    }
+
+    @Test
+    void getRequestTest() {
+        Request request = requestService.getRequest(user.getId(), requestCreated.getId());
+
+        assertThat(request).isNotNull();
+        assertThat("new description").isEqualTo(request.getDescription());
+    }
+
+    @Test
+    public void createRequestTest() {
+        Request newRequest = new Request();
+        newRequest.setDescription("more details");
+        newRequest.setCreated(LocalDateTime.now().minusHours(2));
+        newRequest.setUserId(user.getId());
+
+        Request createdRequest = requestService.createRequest(newRequest);
+
+        assertThat(createdRequest).isNotNull();
+        assertThat("more details").isEqualTo(createdRequest.getDescription());
+    }
+
+    @Test
+    public void createInvalidRequestTest() {
+        Request newRequest = new Request();
+        newRequest.setCreated(LocalDateTime.now().minusHours(2));
+        newRequest.setUserId(user.getId());
+
+        assertThrows(DataIntegrityViolationException.class, () -> {
+            requestService.createRequest(newRequest);
+        });
     }
 
     @Test

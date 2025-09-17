@@ -75,6 +75,18 @@ public class ItemControllerTest {
                 .andExpect(jsonPath("$.name").value(mockItemDto.getName()));
     }
 
+    @Test
+    public void getItemByIdWithNullItemIdThrowsException() throws Exception {
+        Long userId = 1L;
+
+        mockMvc.perform(get("/items/{itemId}", "")
+                        .header("X-Sharer-User-Id", userId))
+                .andExpect(status().is5xxServerError());
+
+        verify(userService, never()).getUserById(anyLong());
+        verify(itemService, never()).getByItemIdAndUserId(anyLong(), anyLong());
+    }
+
 
     @Test
     public void getItemsByUserIdTest() throws Exception {

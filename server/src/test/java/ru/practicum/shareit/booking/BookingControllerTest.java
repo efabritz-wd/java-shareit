@@ -109,6 +109,21 @@ public class BookingControllerTest {
     }
 
     @Test
+    public void getAllBookingsInvalidStateEmptyTest() throws Exception {
+        Long userId = 1L;
+        String state = "ALL";
+        List<BookingResultDto> resultDtos = new ArrayList<>();
+        resultDtos.add(bookingResultDto);
+
+        when(bookingService.getBookingsByUserIdAndState(userId, state)).thenReturn(resultDtos);
+
+        mockMvc.perform(get("/bookings?state=INVALID")
+                        .header("X-Sharer-User-Id", 1L))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(0));
+    }
+
+    @Test
     public void getAllBookingsOwnerTest() throws Exception {
         Long userId = 1L;
         String state = "ALL";
