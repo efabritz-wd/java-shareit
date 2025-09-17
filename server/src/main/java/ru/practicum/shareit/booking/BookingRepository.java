@@ -19,29 +19,29 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "ORDER BY b.start DESC")
     List<Booking> findByBookerId(Long bookerId);
 
-    List<Booking> findByBookerIdAndStatus(Long bookerId, String status, Sort sort);
+    List<Booking> findByBookerIdAndStatus(Long bookerId, BookingStatus status, Sort sort);
 
     //current
-    List<Booking> findByBookerIdAndStartDateIsBeforeAndEndDateIsAfter(Long bookerId, LocalDateTime start, LocalDateTime end, Sort sort);
+    List<Booking> findByBookerIdAndStartIsBeforeAndEndIsAfter(Long bookerId, LocalDateTime start, LocalDateTime end, Sort sort);
 
     //past
-    List<Booking> findByBookerIdAndEndDateIsBefore(Long bookerId, LocalDateTime end, Sort sort);
+    List<Booking> findByBookerIdAndEndIsBefore(Long bookerId, LocalDateTime end, Sort sort);
 
     //future
-    List<Booking> findByBookerIdAndStartDateIsAfter(Long bookerId, LocalDateTime start, Sort sort);
+    List<Booking> findByBookerIdAndStartIsAfter(Long bookerId, LocalDateTime start, Sort sort);
 
     List<Booking> findByItemIdIn(List<Long> itemIds, Sort sort);
 
-    List<Booking> findByItemIdInAndStatus(List<Long> itemIds, String status, Sort sort);
+    List<Booking> findByItemIdInAndStatus(List<Long> itemIds, BookingStatus status, Sort sort);
 
     //current
-    List<Booking> findByItemIdInAndStartDateIsBeforeAndEndDateIsAfter(List<Long> itemIds, LocalDateTime start, LocalDateTime end, Sort sort);
+    List<Booking> findByItemIdInAndStartIsBeforeAndEndIsAfter(List<Long> itemIds, LocalDateTime start, LocalDateTime end, Sort sort);
 
     //past
-    List<Booking> findByItemIdInAndEndDateIsBefore(List<Long> itemIds, LocalDateTime end, Sort sort);
+    List<Booking> findByItemIdInAndEndIsBefore(List<Long> itemIds, LocalDateTime end, Sort sort);
 
     //future
-    List<Booking> findByItemIdInAndStartDateIsAfter(List<Long> itemIds, LocalDateTime start, Sort sort);
+    List<Booking> findByItemIdInAndStartIsAfter(List<Long> itemIds, LocalDateTime start, Sort sort);
 
     @Query("SELECT  b  FROM Booking b JOIN b.item i " +
             "WHERE i.id = :itemId AND b.end < :currentTime" +

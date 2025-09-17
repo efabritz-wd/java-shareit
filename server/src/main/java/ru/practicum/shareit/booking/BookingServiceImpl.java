@@ -101,24 +101,24 @@ public class BookingServiceImpl implements BookingService {
 
         switch (state) {
             case CURRENT:
-                bookings = bookingRepository.findByBookerIdAndStartDateIsBeforeAndEndDateIsAfter(
+                bookings = bookingRepository.findByBookerIdAndStartIsBeforeAndEndIsAfter(
                         userId, currentTime, currentTime, sort);
                 break;
             case PAST:
-                bookings = bookingRepository.findByBookerIdAndEndDateIsBefore(
+                bookings = bookingRepository.findByBookerIdAndEndIsBefore(
                         userId, currentTime, Sort.by(Sort.Direction.DESC, "endDate"));
                 break;
             case FUTURE:
-                bookings = bookingRepository.findByBookerIdAndStartDateIsAfter(
+                bookings = bookingRepository.findByBookerIdAndStartIsAfter(
                         userId, currentTime, sort);
                 break;
             case WAITING:
                 bookings = bookingRepository.findByBookerIdAndStatus(
-                        userId, "WAITING", sort);
+                        userId, BookingStatus.WAITING, sort);
                 break;
             case REJECTED:
                 bookings = bookingRepository.findByBookerIdAndStatus(
-                        userId, "REJECTED", sort);
+                        userId, BookingStatus.REJECTED, sort);
                 break;
             case ALL:
             default:
@@ -150,24 +150,24 @@ public class BookingServiceImpl implements BookingService {
 
         switch (state) {
             case CURRENT:
-                bookings = bookingRepository.findByItemIdInAndStartDateIsBeforeAndEndDateIsAfter(
+                bookings = bookingRepository.findByItemIdInAndStartIsBeforeAndEndIsAfter(
                         itemIds, currentTime, currentTime, sort);
                 break;
             case PAST:
-                bookings = bookingRepository.findByItemIdInAndEndDateIsBefore(
+                bookings = bookingRepository.findByItemIdInAndEndIsBefore(
                         itemIds, currentTime, Sort.by(Sort.Direction.DESC, "endDate"));
                 break;
             case FUTURE:
-                bookings = bookingRepository.findByItemIdInAndStartDateIsAfter(
+                bookings = bookingRepository.findByItemIdInAndStartIsAfter(
                         itemIds, currentTime, sort);
                 break;
             case WAITING:
                 bookings = bookingRepository.findByItemIdInAndStatus(
-                        itemIds, "WAITING", sort);
+                        itemIds, BookingStatus.WAITING, sort);
                 break;
             case REJECTED:
                 bookings = bookingRepository.findByItemIdInAndStatus(
-                        itemIds, "REJECTED", sort);
+                        itemIds, BookingStatus.REJECTED, sort);
                 break;
             case ALL:
             default:
