@@ -179,4 +179,79 @@ public class BookingServiceImplTest {
                 () -> bookingService.getBookingsByOwnerIdAndState(owner.getId(), "INVALID"));
         assertThat(exception.getMessage()).isEqualTo("State parameter is not valid");
     }
+
+    @Test
+    void getBookingsByUserIdAndStateAllTest() {
+        BookingResultDto booking1 = bookingService.addBooking(item1, booker, bookingRequest1);
+        BookingResultDto booking2 = bookingService.addBooking(item2, booker, bookingRequest2);
+
+        List<BookingResultDto> bookings = bookingService.getBookingsByUserIdAndState(booker.getId(), "ALL");
+
+        assertThat(bookings).hasSize(2);
+        assertThat(bookings).extracting(BookingResultDto::getId).containsExactlyInAnyOrder(booking1.getId(), booking2.getId());
+    }
+
+    @Test
+    void getBookingsByUserIdAndStateCurrentTest() {
+        BookingRequestDto currentBooking = new BookingRequestDto(item1.getId(),
+                LocalDateTime.now().minusDays(1), LocalDateTime.now().plusDays(1));
+        BookingResultDto booking = bookingService.addBooking(item1, booker, currentBooking);
+
+        List<BookingResultDto> bookings = bookingService.getBookingsByUserIdAndState(booker.getId(), "CURRENT");
+
+        assertThat(bookings).hasSize(1);
+        assertThat(bookings.get(0).getId()).isEqualTo(booking.getId());
+    }
+
+    @Test
+    void getBookingsByUserIdAndStatePastTest() {
+        BookingRequestDto pastBooking = new BookingRequestDto(item1.getId(),
+                LocalDateTime.now().minusDays(5), LocalDateTime.now().minusDays(2));
+        BookingResultDto booking = bookingService.addBooking(item1, booker, pastBooking);
+
+        List<BookingResultDto> bookings = bookingService.getBookingsByUserIdAndState(booker.getId(), "PAST");
+
+        assertThat(bookings).hasSize(1);
+        assertThat(bookings.get(0).getId()).isEqualTo(booking.getId());
+    }
+
+    @Test
+    void getBookingsByUserIdAndStateFutureTest() {
+        BookingResultDto booking = bookingService.addBooking(item1, booker, bookingRequest1);
+
+        List<BookingResultDto> bookings = bookingService.getBookingsByUserIdAndState(booker.getId(), "FUTURE");
+
+        assertThat(bookings).hasSize(1);
+        assertThat(bookings.get(0).getId()).isEqualTo(booking.getId());
+    }
+
+    @Test
+    void getBookingsByUserIdAndStateWaitingTest() {
+        BookingResultDto booking = bookingService.addBooking(item1, booker, bookingRequest1);
+
+        List<BookingResultDto> bookings = bookingService.getBookingsByUserIdAndState(booker.getId(), "WAITING");
+
+        assertThat(bookings).hasSize(1);
+        assertThat(bookings.get(0).getId()).isEqualTo(booking.getId());
+        assertThat(bookings.get(0).getStatus()).isEqualTo(BookingStatus.WAITING);
+    }
+
+    @Test
+    void getBookingsByUserIdAndStateRejectedTest() {
+        BookingResultDto booking = bookingService.addBooking(item1, booker, bookingRequest1);
+        bookingService.approveBooking(owner.getId(), false, booking.getId());
+
+        List<BookingResultDto> bookings = bookingService.getBookingsByUserIdAndState(booker.getId(), "REJECTED");
+
+        assertThat(bookings).hasSize(1);
+        assertThat(bookings.get(0).getId()).isEqualTo(booking.getId());
+        assertThat(bookings.get(0).getStatus()).isEqualTo(BookingStatus.REJECTED);
+    }
+
+    @Test
+    void getBookingsByUserIdAndStateInvalidStateThrowsExceptionTest() {
+        ValidationException exception = assertThrows(ValidationException.class,
+                () -> bookingService.getBookingsByUserIdAndState(booker.getId(), "INVALID"));
+        assertThat(exception.getMessage()).isEqualTo("State parameter is not valid");
+    }
 }
