@@ -24,7 +24,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final ItemRepository itemRepository;
 
-    private Sort sort = Sort.by(Sort.Direction.DESC, "startDate");
+    private Sort sort = Sort.by(Sort.Direction.DESC, "start");
 
     @Override
     public BookingResultDto addBooking(ItemDto itemDto, UserDto userDto, BookingRequestDto bookingRequestDto) {
@@ -106,7 +106,7 @@ public class BookingServiceImpl implements BookingService {
                 break;
             case PAST:
                 bookings = bookingRepository.findByBookerIdAndEndIsBefore(
-                        userId, currentTime, Sort.by(Sort.Direction.DESC, "endDate"));
+                        userId, currentTime, Sort.by(Sort.Direction.DESC, "end"));
                 break;
             case FUTURE:
                 bookings = bookingRepository.findByBookerIdAndStartIsAfter(
@@ -145,7 +145,7 @@ public class BookingServiceImpl implements BookingService {
         try {
             itemIds = itemRepository.findItemIdsByOwnerId(userId);
         } catch (Exception e) {
-            System.err.println("Fehler beim Abrufen der Item-IDs: " + e.getMessage());
+            System.err.println("Error in Item-IDs: " + e.getMessage());
         }
 
         switch (state) {
@@ -155,7 +155,7 @@ public class BookingServiceImpl implements BookingService {
                 break;
             case PAST:
                 bookings = bookingRepository.findByItemIdInAndEndIsBefore(
-                        itemIds, currentTime, Sort.by(Sort.Direction.DESC, "endDate"));
+                        itemIds, currentTime, Sort.by(Sort.Direction.DESC, "end"));
                 break;
             case FUTURE:
                 bookings = bookingRepository.findByItemIdInAndStartIsAfter(

@@ -15,8 +15,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.mapper.CommentMapper;
 import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.user.dto.UserDto;
 
@@ -36,6 +38,18 @@ public class ItemControllerTest {
     @MockBean
     private UserService userService;
 
+    @MockBean
+    private CommentMapper commentMapper;
+
+    @MockBean
+    private CommentDto commentDto;
+
+    @MockBean
+    private CommentRepository commentRepository;
+
+    @MockBean
+    private BookingRepository bookingRepository;
+
     @InjectMocks
     private ItemController itemController;
 
@@ -45,7 +59,7 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void testGetItemById() throws Exception {
+    public void getItemByIdTest() throws Exception {
         Long userId = 1L;
         Long itemId = 1L;
         ItemDto mockItemDto = new ItemDto(1L, "itemname", "description",
@@ -63,7 +77,7 @@ public class ItemControllerTest {
 
 
     @Test
-    public void testGetItemsByUserId() throws Exception {
+    public void getItemsByUserIdTest() throws Exception {
         Long userId = 1L;
         List<ItemDto> mockItems = Arrays.asList(new ItemDto(), new ItemDto());
 
@@ -78,7 +92,7 @@ public class ItemControllerTest {
 
 
     @Test
-    public void testGetItemsByText() throws Exception {
+    public void getItemsByTextTest() throws Exception {
         Long userId = 1L;
         List<ItemDto> mockItems = Arrays.asList(new ItemDto(), new ItemDto());
 
@@ -95,7 +109,7 @@ public class ItemControllerTest {
 
 
     @Test
-    public void testAddItem() throws Exception {
+    public void addItemTest() throws Exception {
         Long userId = 1L;
         ItemDto itemDto = new ItemDto();
         itemDto.setOwnerId(userId);
@@ -118,7 +132,7 @@ public class ItemControllerTest {
 
 
     @Test
-    public void testUpdateItem() throws Exception {
+    public void updateItemTest() throws Exception {
         Long userId = 1L;
         Long itemId = 1L;
         ItemDto mockUpdatedItem = new ItemDto();
@@ -136,9 +150,8 @@ public class ItemControllerTest {
 
 
     @Test
-    public void testDeleteItem() throws Exception {
+    public void deleteItemTest() throws Exception {
         Long itemId = 1L;
-
         doNothing().when(userService).deleteUser(itemId);
 
         mockMvc.perform(delete("/items/{itemId}", itemId))
@@ -146,7 +159,7 @@ public class ItemControllerTest {
     }
 
     @Test
-    public void testAddComment() throws Exception {
+    public void addCommentTest() throws Exception {
         Long userId = 1L;
         Long itemId = 1L;
         CommentDto mockCommentDto = new CommentDto(1L, "New item comment", "testuser", LocalDateTime.now().minusHours(4));
@@ -163,6 +176,4 @@ public class ItemControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.text").value("New item comment"));
     }
-
 }
-
