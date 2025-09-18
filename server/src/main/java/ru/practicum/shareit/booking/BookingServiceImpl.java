@@ -142,11 +142,12 @@ public class BookingServiceImpl implements BookingService {
 
 
         List<Long> itemIds = new ArrayList<>();
-        try {
-            itemIds = itemRepository.findItemIdsByOwnerId(userId);
-        } catch (Exception e) {
-            System.err.println("Error in Item-IDs: " + e.getMessage());
+
+        itemIds = itemRepository.findItemIdsByOwnerId(userId);
+        if (itemIds.isEmpty()) {
+            throw new NotFoundException("Items not found for owner id: " + userId);
         }
+
 
         switch (state) {
             case CURRENT:
