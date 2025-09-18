@@ -87,6 +87,17 @@ public class ItemControllerTest {
         verify(itemService, never()).getByItemIdAndUserId(anyLong(), anyLong());
     }
 
+    @Test
+    public void getItemByIdWithMissingUserIdHeaderThrowsException() throws Exception {
+        Long itemId = 1L;
+
+        mockMvc.perform(get("/items/{itemId}", itemId))
+                .andExpect(status().is5xxServerError());
+
+        verify(userService, never()).getUserById(anyLong());
+        verify(itemService, never()).getByItemIdAndUserId(anyLong(), anyLong());
+    }
+
 
     @Test
     public void getItemsByUserIdTest() throws Exception {

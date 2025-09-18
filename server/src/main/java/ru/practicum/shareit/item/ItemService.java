@@ -1,7 +1,9 @@
 package ru.practicum.shareit.item;
 
+import ru.practicum.shareit.item.dto.BookerDto;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.dto.UserDto;
 
 import java.util.List;
@@ -27,4 +29,8 @@ public interface ItemService {
     ItemDto updateItem(ItemDto itemDto, Long itemId, UserDto userDto);
 
     void deleteItem(Long itemId);
+
+    BookerDto getPreviousBooking(Item item);
+
+    BookerDto getNextBooking(Item item);
 }

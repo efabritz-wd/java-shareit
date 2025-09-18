@@ -59,6 +59,7 @@ public class ItemServiceImpl implements ItemService {
         return commentMapper.toCommentDto(commentRepository.save(comment));
     }
 
+    @Override
     public BookerDto getPreviousBooking(Item item) {
         Booking booking = bookingRepository.getLastBooking(item.getId(), LocalDateTime.now());
         if (booking == null) {
@@ -67,6 +68,7 @@ public class ItemServiceImpl implements ItemService {
         return bookingMapper.toBookerDto(booking);
     }
 
+    @Override
     public BookerDto getNextBooking(Item item) {
         Booking booking = bookingRepository.getNextBooking(item.getId(), LocalDateTime.now());
         if (booking == null) {
