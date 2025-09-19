@@ -1,6 +1,6 @@
 package ru.practicum.shareit.user;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.NotFoundException;
@@ -17,8 +17,9 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
+
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public UserDto getUserById(Long id) {
         if (userRepository.findById(id).isEmpty()) {
             throw new NotFoundException("User not found");
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
         return userMapper.toUserDto(users);

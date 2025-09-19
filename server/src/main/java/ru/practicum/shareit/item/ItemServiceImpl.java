@@ -1,9 +1,10 @@
 package ru.practicum.shareit.item;
 
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
@@ -36,6 +37,7 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<CommentDto> getAllCommentsByItemId(Long itemId) {
         List<Comment> comments = commentRepository.findAllByItemId(itemId);
 
@@ -60,6 +62,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BookerDto getPreviousBooking(Item item) {
         Booking booking = bookingRepository.getLastBooking(item.getId(), LocalDateTime.now());
         if (booking == null) {
@@ -69,6 +72,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BookerDto getNextBooking(Item item) {
         Booking booking = bookingRepository.getNextBooking(item.getId(), LocalDateTime.now());
         if (booking == null) {
@@ -78,6 +82,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ItemDto getItemById(Long itemId) {
         if (itemRepository.findById(itemId).isEmpty()) {
             throw new NotFoundException("Item not found");
@@ -87,12 +92,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ItemDto> getItemsByUserId(Long userId) {
         List<Item> items = itemRepository.findAllByOwnerId(userId);
         return items.stream().map(itemMapper::toItemDto).toList();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ItemDto getByItemIdAndUserId(Long itemId, Long userId) {
         if (itemRepository.findById(itemId).isEmpty()) {
             throw new NotFoundException("Item not found for id: " + itemId);
@@ -107,6 +114,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ItemDto> getAllItemsByText(String text) {
         if (text.isEmpty()) {
             return List.of();
@@ -119,6 +127,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ItemDto> getAllItems() {
         List<Item> items = itemRepository.findAll();
         return items.stream().map(itemMapper::toItemDto).toList();

@@ -3,6 +3,7 @@ package ru.practicum.shareit.booking;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.dto.BookingResultDto;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookingServiceImpl implements BookingService {
     private final BookingMapper bookingMapper;
     private final BookingRepository bookingRepository;
@@ -71,6 +73,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BookingResultDto getBookingByIdAndUserId(Long bookingId, Long userId) {
         if (bookingRepository.findById(bookingId).isEmpty()) {
             throw new NotFoundException("Booking not found");
@@ -89,6 +92,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BookingResultDto> getBookingsByUserIdAndState(Long userId, String stateStr) {
         if (!State.isValid(stateStr)) {
             throw new ValidationException("State parameter is not valid");
@@ -130,6 +134,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BookingResultDto> getBookingsByOwnerIdAndState(Long userId, String stateStr) {
         if (!State.isValid(stateStr)) {
             throw new ValidationException("State parameter is not valid");

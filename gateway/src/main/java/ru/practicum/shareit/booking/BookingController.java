@@ -27,14 +27,14 @@ public class BookingController {
 
     @GetMapping
     public ResponseEntity<Object> getAllBookings(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                                 @RequestParam(value = "state", defaultValue = "ALL")
+                                                 @RequestParam(defaultValue = "ALL")
                                                  String state) {
         return bookingClient.getAllBookings(userId, state);
     }
 
     @GetMapping("/owner")
     public ResponseEntity<Object> getAllBookingsByOwner(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                                        @RequestParam(value = "state", defaultValue = "ALL") String state) {
+                                                        @RequestParam(defaultValue = "ALL") String state) {
         return bookingClient.getAllBookingsByOwner(userId, state);
     }
 
